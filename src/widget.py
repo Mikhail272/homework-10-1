@@ -19,3 +19,13 @@ def mask_account_card(type_and_number: str) -> str:
 
 
 print(mask_account_card("Visa Platinum 7000792289606361"))
+
+
+def get_date(data_time: str) -> str:
+    data_time_new = data_time[:10]
+    year, month, day = data_time_new.split("-")
+    return f"{day}.{month}.{year}"
+
+
+data_input = get_date("2024-03-11T02:26:18.671407")
+print(data_input)
