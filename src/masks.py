@@ -1,7 +1,6 @@
 from typing import Union
 
-masked_number = input()
-mask_account = input()
+
 
 
 def get_mask_card_number(card_number: Union[str | int]) -> str:
@@ -18,5 +17,4 @@ def get_mask_account(mask_account: Union[str | int]) -> str:
     return masked_account
 
 
-print(get_mask_card_number(masked_number))
-print(get_mask_account(mask_account))
+
