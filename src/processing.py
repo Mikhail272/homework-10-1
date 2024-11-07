@@ -1,3 +1,7 @@
+from xml.etree.ElementPath import xpath_tokenizer
+
+from typing import Any
+
 def filter_by_state(list_dict: list[dict], state="EXECUTED") -> list[dict]:
     """Функция, формирующая данные по указанному параметру"""
     return [el for el in list_dict if el["state"] == state]
@@ -11,5 +15,14 @@ status_klient = [
 ]
 
 
-state = "CANCELED"
-print(filter_by_state(status_klient, state))
+# state = "CANCELED"
+# print(filter_by_state(status_klient, state))
+
+
+def sort_by_date(list_dict: list[dict], date_sort: bool=True) -> list[dict]:
+    """Функция, сортирующая данные по  дате"""
+    sorted_date = sorted(list_dict, key=lambda x: x['date'], reverse= True)
+    return sorted_date
+
+
+print(sort_by_date(status_klient))
