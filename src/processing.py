@@ -1,4 +1,5 @@
-def filter_by_state(list_dict: list, state='EXECUTED')-> list:
+def filter_by_state(list_dict: list[dict], state='EXECUTED')-> list[dict]:
+    """Функция, формирующая данные по указанному параметру"""
     return [el for el in list_dict if el['state'] == state]
 
 
@@ -9,4 +10,5 @@ status_klient = [{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35
 
 
 state = 'CANCELED'
-print(filter_by_state(status_klient))
+print(filter_by_state(status_klient, state))
+
