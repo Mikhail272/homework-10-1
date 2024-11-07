@@ -1,5 +1,5 @@
 def filter_by_state(list_dict: list[dict], state="EXECUTED") -> list[dict]:
-    """Функция, формирующая данные по указанному параметру"""
+    """Функция, формирующая данные по указанному параметру транзакции"""
     return [el for el in list_dict if el["state"] == state]
 
 
@@ -16,7 +16,7 @@ status_klient = [
 
 
 def sort_by_date(list_dict: list[dict], date_sort: bool = True) -> list[dict]:
-    """Функция, сортирующая данные по  дате"""
+    """Функция, сортирующая транзакции по  дате"""
     sorted_date = sorted(list_dict, key=lambda x: x["date"], reverse=True)
     return sorted_date
 
