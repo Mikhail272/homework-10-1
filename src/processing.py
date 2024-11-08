@@ -16,9 +16,16 @@ status_klient = [
 
 
 def sort_by_date(list_dict: list[dict], date_sort: bool = True) -> list[dict]:
-    """Функция, сортирующая транзакции по дате"""
-    sorted_date = sorted(list_dict, key=lambda x: x["date"], reverse=True)
+    """Функция, сортирующая транзакции по дате."""
+    sorted_date = sorted(list_dict, key=lambda x: x["date"], reverse=not date_sort)
     return sorted_date
 
 
+# Сортировка по убыванию (по умолчанию)
 print(sort_by_date(status_klient))
+
+# Сортировка по возрастанию
+print(sort_by_date(status_klient, date_sort=False))
+
+
+
