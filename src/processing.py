@@ -1,4 +1,4 @@
-def filter_by_state(list_dict: list[dict], state="EXECUTED") -> list[dict]:
+def filter_by_state(list_dict: list[dict], state: str = "EXECUTED") -> list[dict]:
     """Функция, формирующая данные по указанному параметру транзакции"""
     return [el for el in list_dict if el["state"] == state]
 
@@ -26,6 +26,3 @@ print(sort_by_date(status_klient))
 
 # Сортировка по возрастанию
 print(sort_by_date(status_klient, date_sort=False))
-
-
-
