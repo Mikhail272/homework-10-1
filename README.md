@@ -77,7 +77,7 @@
    - **Возвращает:** Список словарей, соответствующих указанному состоянию.
    - **Пример:**
 ```python
-     filtered_data = filter_by_state(status_klient, state="CANCELED")
+     filtered_data = filter_by_state(list_of_data, state="CANCELED")
      print(filtered_data)  # Вывод: [{'id': 594226727, 'state': 'CANCELED', ...}, {'id': 615064591, 'state': 'CANCELED', ...}]
      ```
 6. `def sort_by_date(list_dict: list[dict], date_sort: bool = True) -> list[dict]`
@@ -88,7 +88,7 @@
    - **Возвращает:** Отсортированный список словарей.
    - **Пример:**
 ```python
-     sorted_data = sort_by_date(status_klient)
+     sorted_data = sort_by_date(list_of_data)
      print(sorted_data)  # Вывод: отсортированный список по дате
      ```
 ## Заключение
