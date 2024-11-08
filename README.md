@@ -69,8 +69,8 @@
      ```
 ### Функции для работы с данными клиента
 
-5. `filter_by_state(list_dict: list[dict], state="EXECUTED") -> list[dict]`
-   - **Описание:** Формирует список словарей по указанному состоянию транзакций (например, "EXECUTED").
+5. `def filter_by_state(list_dict: list[dict], state: str = "EXECUTED") -> list[dict]`
+   - **Описание:** Функция, формирующая данные по указанному параметру транзакции (например, "EXECUTED").
    - **Параметры:**
      - `list_dict`: Список словарей с данными клиента.
      - `state`: Состояние для фильтрации (по умолчанию "EXECUTED").
@@ -80,7 +80,7 @@
      filtered_data = filter_by_state(status_klient, state="CANCELED")
      print(filtered_data)  # Вывод: [{'id': 594226727, 'state': 'CANCELED', ...}, {'id': 615064591, 'state': 'CANCELED', ...}]
      ```
-6. `sort_by_date(list_dict: list[dict], date_sort: bool = True) -> list[dict]`
+6. `def sort_by_date(list_dict: list[dict], date_sort: bool = True) -> list[dict]`
    - **Описание:** Сортирует список словарей по дате в порядке убывания.
    - **Параметры:**
      - `list_dict`: Список словарей с данными клиента.
