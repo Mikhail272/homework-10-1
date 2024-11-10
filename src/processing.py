@@ -17,7 +17,7 @@ list_of_data = [
 
 def sort_by_date(list_dict: list[dict], date_sort: bool = True) -> list[dict]:
     """Функция, сортирующая транзакции по дате."""
-    sorted_date = sorted(list_dict, key=lambda x: x["date"], reverse=not date_sort)
+    sorted_date = sorted(list_dict, key=lambda x: x["date"], reverse=date_sort)
     return sorted_date
 
 
