@@ -1,6 +1,4 @@
 import pytest
-
-from tests.conftest import test_state
 from src.processing import filter_by_state, sort_by_date
 
 
@@ -54,7 +52,7 @@ def test_filter_by_state(test_state):
         ),  # Ожидаемый результат для состояния, которое не существует в данных
     ],
 )
-def test_filter_by_state(test_state, state, expected_output):
+def test_filter_by_state_canceled(test_state, state, expected_output):
     result = filter_by_state(test_state, state)
     assert result == expected_output
 
