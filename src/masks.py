@@ -1,5 +1,6 @@
 from typing import Union
 
+
 def get_mask_card_number(card_number: Union[str, int]) -> str:
     """Функция формирует замаскированный номер карты"""
     card_number = str(card_number)  # Преобразуем в строку
@@ -16,8 +17,3 @@ def get_mask_account(mask_account: Union[str, int]) -> str:
         return "Неверный формат номера счета"
     masked_account = f"**{mask_account[-4:]}"
     return masked_account
-
-
-
-
-
