@@ -1,6 +1,6 @@
 import pytest
 
-from conftest import test_state
+from tests.conftest import test_state
 from src.processing import filter_by_state, sort_by_date
 
 
