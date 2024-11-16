@@ -18,8 +18,17 @@ def mask_account_card(type_and_number: str) -> str:
 
 def get_date(data_time: str) -> str:
     """Функция, которая изменяет формат даты"""
+    if not data_time or len(data_time) < 10:
+        raise ValueError("Некорректный формат даты")
+
+    # Извлекаем первую часть строки
     data_time_new = data_time[:10]
-    year, month, day = data_time_new.split("-")
+
+    try:
+        year, month, day = data_time_new.split("-")
+    except ValueError:
+        raise ValueError("Некорректный формат даты")
+
     return f"{day}.{month}.{year}"
 
 

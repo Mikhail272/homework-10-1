@@ -1,5 +1,5 @@
 import pytest
-from src.widget import mask_account_card, get_mask_account, get_mask_card_number
+from src.widget import mask_account_card, get_mask_account, get_mask_card_number, get_date
 
 @pytest.fixture
 def expected_masked_cards():
@@ -44,3 +44,22 @@ def test_get_mask_account(account_number, expected_output):
 ])
 def test_get_mask_card_number(card_number, expected_output):
     assert get_mask_card_number(card_number) == expected_output
+
+
+
+def test_get_date():
+    data_input = "2024-03-11T02:26:18.671407"
+    assert get_date(data_input) == "11.03.2024" # получение корректного результата
+
+
+@pytest.mark.parametrize("invalid_input", [
+    "InvalidInput",  # Некорректный ввод
+    "",              # Пустая строка
+])
+def test_get_date_invalid(invalid_input):
+    with pytest.raises(ValueError):  # Проверяем, что возникает ошибка
+        get_date(invalid_input)
+
+
+
+
