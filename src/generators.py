@@ -6,12 +6,10 @@ def filter_by_currency(transactions, currency_code):
             yield transaction
 
 
-transactions = []
-
-# Получаем итератор транзакций в USD
-usd_transactions = filter_by_currency(transactions, "USD")
-for _ in range(2):
-    print(next(usd_transactions))
+# переместите переменную transactions сюда или передавайте её в функции
+def get_usd_transactions(transactions):
+    """Возвращает итератор транзакций в USD."""
+    return filter_by_currency(transactions, "USD")
 
 
 def transaction_descriptions(transactions):
@@ -20,10 +18,26 @@ def transaction_descriptions(transactions):
         yield transaction.get("description", "")
 
 
-# Получаем генератор описаний транзакций
-descriptions = transaction_descriptions(transactions)
-for _ in range(5):
-    print(next(descriptions))
+
+if __name__ == "__main__":
+    transactions = []
+    # Получаем итератор транзакций в USD
+    usd_transactions = get_usd_transactions(transactions)
+
+
+    try:
+        for _ in range(2):
+            print(next(usd_transactions))
+    except StopIteration:
+        print("Нет доступных транзакций в USD.")
+
+    # Получаем генератор описаний транзакций
+    descriptions = transaction_descriptions(transactions)
+    try:
+        for _ in range(5):
+            print(next(descriptions))
+    except StopIteration:
+        print("Нет описаний транзакций.")
 
 
 def card_number_generator(start, end):
@@ -35,6 +49,8 @@ def card_number_generator(start, end):
         formatted_card_number = f"{card_number[:4]} {card_number[4:8]} {card_number[8:12]} {card_number[12:]}"
         yield formatted_card_number
 
-# Пример использования функции
-for card_number in card_number_generator(1, 5):
-    print(card_number)
+
+
+if __name__ == "__main__":
+    for card_number in card_number_generator(1, 5):
+        print(card_number)
