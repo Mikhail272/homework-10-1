@@ -8,7 +8,7 @@ from src.generators import (
 
 
 def test_filter_by_currency(lst_for_generator: list, empty_lsts: list) -> None:
-    """Функция тестирует filter_by_currency from src.generators"""
+    """Тестируем функцию filter_by_currency from src.generators"""
     usd_transactions_with_currency = filter_by_currency(lst_for_generator, "USD")
     assert next(usd_transactions_with_currency) == {
         "id": 939719570,
