@@ -49,6 +49,49 @@ def test_filter_by_currency(lst_for_generator: list, empty_lsts: list) -> None:
         assert next(usd_transactions_empty_lst)
 
 
+# Тестирование функции filter_by_currency с параметризацией
+@pytest.mark.parametrize("currency, expected_ids", [
+    ("USD", [939719570, 142264268, 765432143]),
+    ("EUR", [842164879]),
+    ("RUB", [103845286]),
+    ("JPY", []),
+])
+def test_filter_by_currency(transactions, currency, expected_ids):
+    filtered_transactions = list(filter_by_currency(transactions, currency))
+    assert [t["id"] for t in filtered_transactions] == expected_ids
+
+
+# Тесты на отсутствие ключей
+def test_filter_by_currency_missing_operation_amount(transactions):
+    transactions.append({"description": "Test transaction without amount"})
+    result = list(filter_by_currency(transactions, "USD"))
+    assert result == []  # Проверяем, что таких транзакций нет
+
+
+def test_filter_by_currency_missing_currency(transactions):
+    transactions.append({"operationAmount": {}})
+    result = list(filter_by_currency(transactions, "USD"))
+    assert result == []  # Проверяем, что таких транзакций нет
+
+
+def test_filter_by_currency_missing_code(transactions):
+    transactions.append({"operationAmount": {"currency": {}}})
+    result = list(filter_by_currency(transactions, "USD"))
+    assert result == []  # Проверяем, что таких транзакций нет
+
+
+def test_filter_by_currency_partial_structure(transactions):
+    transactions.append({"operationAmount": {"currency": {"code": "USD"}}})
+    transactions.append({"operationAmount": {"currency": None}})  # Параметр с None
+    transactions.append({"irrelevant_key": "data"})
+
+    result = list(filter_by_currency(transactions, "USD"))
+    assert len(result) == 1  # Убедитесь, что только одна валидная транзакция вернулась
+
+
+# Остальные тесты
+
+
 def test_transaction_descriptions(lst_for_generator: list, empty_lsts: list) -> None:
     """Функция тестирует transaction_descriptions from src.generators"""
     descriptions = transaction_descriptions(lst_for_generator)

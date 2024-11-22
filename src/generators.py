@@ -5,7 +5,10 @@ def filter_by_currency(transactions: list[dict], currency: str) -> Iterator[dict
     """Функция, которая возвращает итератор, который поочередно выдает транзакции,
     где валюта операции соответствует заданной (например, USD)."""
     for i in transactions:
-        if i["operationAmount"]["currency"]["code"] == currency:
+        # Безопасный доступ к ключам с использованием get
+        operation_amount = i.get("operationAmount", {})
+        currency_info = operation_amount.get("currency", {})
+        if currency_info.get("code") == currency:
             yield i
 
 
