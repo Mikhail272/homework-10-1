@@ -1,124 +1,86 @@
 import pytest
-
-from src.generators import (
-    card_number_generator,
-    filter_by_currency,
-    transaction_descriptions,
-)
+from src.generators import filter_by_currency, transaction_descriptions, card_number_generator, transactions
 
 
-def test_filter_by_currency(lst_for_generator: list, empty_lsts: list) -> None:
-    """Тестируем функцию filter_by_currency from src.generators"""
-    usd_transactions_with_currency = filter_by_currency(lst_for_generator, "USD")
-    assert next(usd_transactions_with_currency) == {
-        "id": 939719570,
-        "state": "EXECUTED",
-        "date": "2018-06-30T02:08:58.425572",
-        "operationAmount": {
-            "amount": "9824.07",
-            "currency": {"name": "USD", "code": "USD"},
-        },
-        "description": "Перевод организации",
-        "from": "Счет 75106830613657916952",
-        "to": "Счет 11776614605963066702",
-    }
+def test_filter_by_currency_usd(transactions_list, usd_transactions):
+    result = filter_by_currency(transactions_list, "USD")
+    assert next(result) == usd_transactions
 
-    assert next(usd_transactions_with_currency) == {
-        "id": 142264268,
-        "state": "EXECUTED",
-        "date": "2019-04-04T23:20:05.206878",
-        "operationAmount": {
-            "amount": "79114.93",
-            "currency": {"name": "USD", "code": "USD"},
-        },
-        "description": "Перевод со счета на счет",
-        "from": "Счет 19708645243227258542",
-        "to": "Счет 75651667383060284188",
-    }
 
+def test_filter_by_currency_rub(transactions_list, rub_transactions):
+    result = filter_by_currency(transactions_list, "RUB")
+    assert next(result) == rub_transactions
+
+
+def test_filter_by_currency_exceptions(transactions_list):
+    result = filter_by_currency(transactions_list, "EUR")
+    assert list(result) == []
+    result = filter_by_currency([], "EUR")
+    assert result == "Список пустой!"
+
+
+def test_filter_by_currency_wrong_type():
+    with pytest.raises(TypeError):
+        next(filter_by_currency(1, [4, 3, 2]))
+    with pytest.raises(TypeError):
+        next(filter_by_currency("some_sring", 2))
+    with pytest.raises(TypeError):
+        next(filter_by_currency(transactions, 2))
+    with pytest.raises(TypeError):
+        next(filter_by_currency(521, "USD"))
+
+
+def test_transaction_descriptions(transactions_list):
+    result = transaction_descriptions(transactions_list)
+    assert next(result) == "Перевод организации"
+    assert next(result) == "Перевод со счета на счет"
+    assert next(result) == "Перевод со счета на счет"
+
+
+def test_transaction_descriptions_exceptions():
     with pytest.raises(StopIteration):
-        usd_transactions_wo_currency = filter_by_currency(lst_for_generator, "")
-        assert next(usd_transactions_wo_currency)
-
-    with pytest.raises(StopIteration):
-        usd_transactions_wo_currency = filter_by_currency(lst_for_generator, "EUR")
-        assert next(usd_transactions_wo_currency)
-
-    with pytest.raises(StopIteration):
-        usd_transactions_empty_lst = filter_by_currency(empty_lsts, "USD")
-        assert next(usd_transactions_empty_lst)
+        next(transaction_descriptions([]))
 
 
-# Тестирование функции filter_by_currency с параметризацией
-@pytest.mark.parametrize("currency, expected_ids", [
-    ("USD", [939719570, 142264268, 765432143]),
-    ("EUR", [842164879]),
-    ("RUB", [103845286]),
-    ("JPY", []),
-])
-def test_filter_by_currency(transactions, currency, expected_ids):
-    filtered_transactions = list(filter_by_currency(transactions, currency))
-    assert [t["id"] for t in filtered_transactions] == expected_ids
+def test_transaction_descriptions_wrong_type():
+    with pytest.raises(TypeError):
+        next(transaction_descriptions(1))
+    with pytest.raises(TypeError):
+        next(transaction_descriptions("some_sring"))
 
 
-# Тесты на отсутствие ключей
-def test_filter_by_currency_missing_operation_amount(transactions):
-    transactions.append({"description": "Test transaction without amount"})
-    result = list(filter_by_currency(transactions, "USD"))
-    assert result == []  # Проверяем, что таких транзакций нет
+@pytest.mark.parametrize('start, stop, expected', [(10, 12, ["0000 0000 0000 0010",
+                                                             "0000 0000 0000 0011",
+                                                             "0000 0000 0000 0012"]),
+                                                   (5, 6, ["0000 0000 0000 0005",
+                                                           "0000 0000 0000 0006"]),
+                                                   (1000, 1002, ["0000 0000 0000 1000",
+                                                                 "0000 0000 0000 1001",
+                                                                 "0000 0000 0000 1002"])])
+def test_card_number_generator(start, stop, expected):
+    result = card_number_generator(start, stop)
+    assert next(result) == expected[0]
+    assert next(result) == expected[1]
 
 
-def test_filter_by_currency_missing_currency(transactions):
-    transactions.append({"operationAmount": {}})
-    result = list(filter_by_currency(transactions, "USD"))
-    assert result == []  # Проверяем, что таких транзакций нет
+def test_card_number_generator_wrong_type():
+    with pytest.raises(TypeError):
+        next(card_number_generator([1, 2, 3], 1))
+    with pytest.raises(TypeError):
+        next(card_number_generator(5, "some_sring"))
 
 
-def test_filter_by_currency_missing_code(transactions):
-    transactions.append({"operationAmount": {"currency": {}}})
-    result = list(filter_by_currency(transactions, "USD"))
-    assert result == []  # Проверяем, что таких транзакций нет
+def test_card_number_generator_boundary_values():
+    result_max = card_number_generator(9999999999999998, 9999999999999999)
+    assert next(result_max) == "9999 9999 9999 9998"
+    assert next(result_max) == "9999 9999 9999 9999"
 
 
-def test_filter_by_currency_partial_structure(transactions):
-    transactions.append({"operationAmount": {"currency": {"code": "USD"}}})
-    transactions.append({"operationAmount": {"currency": None}})  # Параметр с None
-    transactions.append({"irrelevant_key": "data"})
-
-    result = list(filter_by_currency(transactions, "USD"))
-    assert len(result) == 1  # Убедитесь, что только одна валидная транзакция вернулась
+def test_card_number_generator_after_boundary_values():
+    with pytest.raises(ValueError):
+        next(card_number_generator(10000000000000000, 10000000000000001))
 
 
-# Остальные тесты
-
-
-def test_transaction_descriptions(lst_for_generator: list, empty_lsts: list) -> None:
-    """Функция тестирует transaction_descriptions from src.generators"""
-    descriptions = transaction_descriptions(lst_for_generator)
-    assert next(descriptions) == "Перевод организации"
-
-    assert next(descriptions) == "Перевод со счета на счет"
-    with pytest.raises(StopIteration):
-        descriptions_empty_lst = transaction_descriptions(empty_lsts)
-        assert next(descriptions_empty_lst)
-
-
-@pytest.mark.parametrize(
-    "start, stop, result",
-    [
-        (1, 3, ["0000 0000 0000 0001", "0000 0000 0000 0002", "0000 0000 0000 0003"]),
-        (12345678, 12345679, ["0000 0000 1234 5678", "0000 0000 1234 5679"]),
-        (
-            1234123412341234,
-            1234123412341235,
-            ["1234 1234 1234 1234", "1234 1234 1234 1235"],
-        ),
-        (1234123412341234, 12341234123412352, [""]),
-        ("1245", "2356", [""]),
-        (10, 1, [""]),
-    ],
-)
-def test_card_number_generator(start: int, stop: int, result: list) -> None:
-    """Функция тестирует card_number_generator from src.generators"""
-    generator = list(card_number_generator(start, stop))
-    assert generator == result
+def test_card_number_generator_wrong_start_stop():
+    with pytest.raises(ValueError):
+        next(card_number_generator(7, 5))
