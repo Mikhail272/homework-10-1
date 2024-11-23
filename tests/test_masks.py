@@ -12,7 +12,7 @@ def test_get_mask_card_number():
     assert get_mask_card_number("") == "Неверный формат банковской карты"
 
 
-@pytest.mark.parametrize("x", [7000792289606361, 8000522289606361, 700792289606361])
+@pytest.mark.parametrize("x", [7000792289606361, 8000522289606361, 7000792289606361])
 def test_get_mask_card_number_parametrized(x):
     card_number_str = str(x)
     expected_masked = (
