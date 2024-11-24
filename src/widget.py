@@ -2,10 +2,18 @@ from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(type_and_number: str) -> str:
-    """ Функция, которая маскирует номер счета или карты"""
+    """Функция, которая маскирует номер счета или карты"""
+    if not type_and_number or len(type_and_number.strip().split()) < 2:
+        raise ValueError("Некорректный ввод: должно быть указано название карты или счета и номер.")
+
     parts = type_and_number.split()  # разбиваем строку на части
     text_result = " ".join(parts[:-1])  # определяем тип карты или счет
     digit_result = parts[-1]  # получаем номер карты/счета
+
+    # Проверка на пустой номер
+    if not digit_result.isdigit() or len(digit_result) < 10:  # Проверка на цифры и минимальную длину
+        raise ValueError("Номер карты или счета должен содержать только цифры и иметь корректную длину.")
+
     digit_count = len(digit_result)
     if digit_count > 16:
         return f"{text_result.strip()} {get_mask_account(digit_result)}"
