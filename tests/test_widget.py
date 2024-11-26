@@ -1,10 +1,5 @@
 import pytest
-from src.widget import (
-    mask_account_card,
-    get_mask_account,
-    get_mask_card_number,
-    get_date,
-)
+from src.widget import (mask_account_card, get_mask_account, get_mask_card_number, get_date,)
 
 
 @pytest.fixture

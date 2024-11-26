@@ -23,7 +23,7 @@ def test_filter_by_currency_wrong_type():
     with pytest.raises(TypeError):
         next(filter_by_currency(1, [4, 3, 2]))
     with pytest.raises(TypeError):
-        next(filter_by_currency("some_sring", 2))
+        next(filter_by_currency("some_string", 2))
     with pytest.raises(TypeError):
         next(filter_by_currency(transactions, 2))
     with pytest.raises(TypeError):
@@ -46,7 +46,7 @@ def test_transaction_descriptions_wrong_type():
     with pytest.raises(TypeError):
         next(transaction_descriptions(1))
     with pytest.raises(TypeError):
-        next(transaction_descriptions("some_sring"))
+        next(transaction_descriptions("some_string"))
 
 
 @pytest.mark.parametrize('start, stop, expected', [(10, 12, ["0000 0000 0000 0010",
@@ -67,7 +67,7 @@ def test_card_number_generator_wrong_type():
     with pytest.raises(TypeError):
         next(card_number_generator([1, 2, 3], 1))
     with pytest.raises(TypeError):
-        next(card_number_generator(5, "some_sring"))
+        next(card_number_generator(5, "some_string"))
 
 
 def test_card_number_generator_boundary_values():
