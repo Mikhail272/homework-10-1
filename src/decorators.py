@@ -31,7 +31,9 @@ def log(filename: str | None = None) -> Callable:
                     print(f"{func.__name__} error: {er}. Inputs: {args} {kwargs}")
                 else:
                     with open(filename, "a", encoding="utf-8") as log_file:
-                        log_file.write(f"{func.__name__} error: {er}. Inputs: {args} {kwargs}\n")
+                        log_file.write(
+                            f"{func.__name__} error: {er}. Inputs: {args} {kwargs}\n"
+                        )
                 raise  # Здесь мы поднимаем исключение дальше
             finally:
                 # Логируем окончание

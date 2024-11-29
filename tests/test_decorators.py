@@ -16,6 +16,7 @@ def test_my_function_success(capsys):
     assert "ok. Result: 7" in captured.out
     assert "Finished execution of my_function." in captured.out
 
+
 def test_my_function_failure(capsys):
     with pytest.raises(ValueError):
         faulty_function()  # Ожидается ValueError
