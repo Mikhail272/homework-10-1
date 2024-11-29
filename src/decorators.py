@@ -68,7 +68,7 @@ def timing(func: Callable) -> Callable:
 
 
 @timing
-@log()  # Убедитесь, что декоратор log вызывается с пустыми скобками
+@log()
 def my_function(x: int | float, y: int | float) -> int | float:
     return x + y
 
