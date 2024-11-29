@@ -32,7 +32,7 @@ def log(filename: str | None = None) -> Callable:
                 else:
                     with open(filename, "a", encoding="utf-8") as log_file:
                         log_file.write(f"{func.__name__} error: {er}. Inputs: {args} {kwargs}\n")
-                return None
+                raise  # Здесь мы поднимаем исключение дальше
             finally:
                 # Логируем окончание
                 if filename is None or filename == "":
